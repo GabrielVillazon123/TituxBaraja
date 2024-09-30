@@ -1,26 +1,43 @@
 package com.example;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Random;
+import java.util.Collections;
 import java.util.Scanner;
 
+/**
+ * Este programa crea una baraja de cartas españolas.
+ * 
+ * Una carta tiene un número entre 1 y 12 (El 8 y el 9 no se incluyen) y un palo
+ * (espadas, bastos, oros, y copas).
+ * 
+ * La baraja estará compuesta por un conjunto de cartas, 40 exactamente.
+ * 
+ * @author Jesús Gabriel Pollos Villazón
+ * @author Alex Fan
+ */
 public class Main {
     public static ArrayList<Carta> baraja = new ArrayList<>();
+    public static ArrayList<Carta> montonDeDescarte = new ArrayList<>();
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
         rellenarBaraja();
 
-        for (Carta carta : baraja) {
-            System.out.println(carta);
-        }
-
         int opcion = -1;
-        boolean valido = false;
         boolean salir = false;
 
         while (!salir) {
+            // TODO: Quitar
+            // mostrarBaraja(baraja, 5);
+            System.out.println("\n*--------------------*");
+            System.out.println("1) Barajar");
+            System.out.println("2) Siguiente Carta");
+            System.out.println("3) Cartas Disponibles");
+            System.out.println("4) Dar Cartas");
+            System.out.println("5) Cartas Monton");
+            System.out.println("6) Mostrar Baraja");
+            System.out.println("*--------------------*");
+
             try {
                 opcion = Integer.parseInt(scanner.nextLine());
             } catch (NumberFormatException e) {
@@ -28,63 +45,117 @@ public class Main {
             }
 
             switch (opcion) {
+                // Barajar
                 case 1:
-                    System.out.println(1);
+                    barajar();
+                    break;
+                // Siguiente Carta
+                case 2:
+                    siguienteCarta();
+                    break;
+                // Cartas Disponibles
+                case 3:
+                    cartasDisponibles();
+                    break;
+                // Dar Cartas
+                case 4:
+                    // darCartas();
+                    break;
+                // Cartas Monton
+                case 5:
+                    cartasMonton();
+                    break;
+                // Mostrar Baraja
+                case 6:
+                    mostrarBaraja(baraja, 5);
                     break;
 
-                case 5:
+                case 7:
                     salir = true;
                     break;
                 default:
                     break;
             }
         }
-
-        // switch (args) {
-        // case value:
-
-        // break;
-
-        // default:
-        // break;
-        // }
-
     }
 
-    // TODO: terminar
+    /**
+     * Cambia de posición todas las cartas aleatoriamente.
+     */
     public static void barajar() {
-        Random random = new Random();
-        int randomNumber = random.nextInt(baraja.size());
-        // int posicionCarta = (randomNumber.get(numero.size) - 1);
+        Collections.shuffle(baraja);
+    }
 
+    /*
+     * Devuelve la siguiente carta que está en la baraja.
+     * 
+     * Cuando no haya más o se haya llegado al final, se indica al usuario que no
+     * hay más cartas.
+     */
+    public static void siguienteCarta() {
+        if (baraja.size() > 0) {
+            Carta siguiente = baraja.get(0);
+            baraja.remove(0);
+            montonDeDescarte.add(siguiente);
+
+            System.out.println("La siguiente carta es: " + siguiente);
+        } else {
+            System.out.println("No quedan cartas :(");
+        }
+    }
+
+    /**
+     * Indica el número de cartas que aún puede repartir.
+     */
+    public static void cartasDisponibles() {
+        System.out.println("Quedan " + baraja.size() + " cartas.");
     }
 
     // TODO: terminar
-    // public static Carta siguienteCarta() {
-
-    // }
-
-    // TODO: terminar
-    // public static int cartasDisponibles() {
-
-    // }
-
-    // TODO: terminar
+    /**
+     * Dado un número de cartas que nos pidan, le devolveremos ese número de cartas.
+     * 
+     * En caso de que haya menos cartas que las pedidas, no devolvremos nada, pero
+     * debemos indicárselo al usuario.
+     */
     // public static ArrayList<Carta> darCartas() {
 
     // }
 
-    // TODO: terminar
+    /**
+     * Mostramos aquellas cartas que ya han salido.
+     * 
+     * Si no ha salido ninguna indicárselo al usuario.
+     */
     public static void cartasMonton() {
-
+        mostrarBaraja(montonDeDescarte, 5);
     }
 
-    // TODO: terminar
-    public static void mostrarBaraja() {
+    /**
+     * Muestra todas las cartas hasta el final.
+     * 
+     * Es decir, si se saca una carta y luego se llama al método, este no mostrara
+     * esa primera carta.
+     */
+    public static void mostrarBaraja(ArrayList<Carta> laBaraja, int separador) {
+        System.out.println("\n*-------------- Estado de baraja ---------------*");
+        if (laBaraja.size() <= 0) {
+            System.out.println("No hay cartas");
+        } else {
+            for (int i = 0; i < laBaraja.size(); i++) {
+                if (i != 0 && separador != 0 && i % separador == 0) {
+                    System.out.println();
+                }
+                System.out.print("[" + laBaraja.get(i).getNumero() + ", " + laBaraja.get(i).getPalo() + "] ");
 
+            }
+        }
+        System.out.println("\n*-----------------------------------------------*");
     }
 
-    // Hecho
+    /**
+     * Rellena la baraja sin random.
+     */
     public static void rellenarBaraja() {
         for (int i = 1; i <= 12; i++) {
             if (i == 8 || i == 9) {
@@ -96,6 +167,5 @@ public class Main {
                 baraja.add(newCarta);
             }
         }
-
     }
 }

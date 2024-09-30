@@ -41,5 +41,4 @@ public class Carta {
     public String toString() {
         return "Carta [numero=" + numero + ", palo=" + palo + "]";
     }
-
 }
