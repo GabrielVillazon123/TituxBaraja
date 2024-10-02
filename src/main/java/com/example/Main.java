@@ -2,6 +2,7 @@ package com.example;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -36,6 +37,7 @@ public class Main {
             System.out.println("4) Dar Cartas");
             System.out.println("5) Cartas Monton");
             System.out.println("6) Mostrar Baraja");
+            System.out.println("7) Salir");
             System.out.println("*--------------------*");
 
             try {
@@ -59,7 +61,7 @@ public class Main {
                     break;
                 // Dar Cartas
                 case 4:
-                    // darCartas();
+                    darCartas();
                     break;
                 // Cartas Monton
                 case 5:
@@ -84,6 +86,7 @@ public class Main {
      */
     public static void barajar() {
         Collections.shuffle(baraja);
+        System.out.println("Barajado!");
     }
 
     /*
@@ -111,16 +114,38 @@ public class Main {
         System.out.println("Quedan " + baraja.size() + " cartas.");
     }
 
-    // TODO: terminar
     /**
      * Dado un número de cartas que nos pidan, le devolveremos ese número de cartas.
      * 
      * En caso de que haya menos cartas que las pedidas, no devolvremos nada, pero
      * debemos indicárselo al usuario.
      */
-    // public static ArrayList<Carta> darCartas() {
+    public static void darCartas() {
+        try {
+            System.out.println("Cartas que quieres: ");
+            int numCartas = scanner.nextInt();
+            // scanner.next(); // Flush
 
-    // }
+            if (baraja.size() > 0) {
+                if (numCartas <= baraja.size()) {
+
+                    for (int i = 0; i < numCartas; i++) {
+                        Carta siguiente1 = baraja.get(0);
+                        baraja.remove(0);
+                        montonDeDescarte.add(siguiente1);
+                        System.out.println(siguiente1);
+                    }
+                } else {
+                    System.out.println(
+                            "El número: " + numCartas + " es más grande que la baraja que queda: " + baraja.size());
+                }
+            } else {
+                System.out.println("No quedan cartas :(");
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Error, Tienes que introducir un número entero válido");
+        }
+    }
 
     /**
      * Mostramos aquellas cartas que ya han salido.
@@ -146,7 +171,7 @@ public class Main {
                 if (i != 0 && separador != 0 && i % separador == 0) {
                     System.out.println();
                 }
-                System.out.print("[" + laBaraja.get(i).getNumero() + ", " + laBaraja.get(i).getPalo() + "] ");
+                System.out.print("[" + laBaraja.get(i).getNumero() + ", " + Carta.Palo.values()[laBaraja.get(i).getPalo()] + "] ");
 
             }
         }

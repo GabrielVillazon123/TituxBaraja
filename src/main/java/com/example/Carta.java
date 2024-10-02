@@ -39,6 +39,6 @@ public class Carta {
 
     @Override
     public String toString() {
-        return "Carta [numero=" + numero + ", palo=" + palo + "]";
+        return "Carta [numero=" + numero + ", palo=" + Palo.values()[palo] + "]";
     }
 }
